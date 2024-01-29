@@ -1,12 +1,14 @@
 [
   [
     {
+      "label": "First Name",
       "id": "firstName",
       "placeholder": "First name",
       "required": true,
       "type": "text"
     },
     {
+      "label": "Last Name",
       "id": "lastName",
       "placeholder": "Last name",
       "required": true,
@@ -14,35 +16,47 @@
     }
   ],
   {
-    "id": "Email",
+    "label": "Email",
+    "id": "email",
     "required": true,
-    "type": "text"
+    "type": "email",
+    "placeholder": "abc@example.com"
   },
   {
+    "label": "Address1",
     "id": "address1",
-    "placeholder": "Address 1",
+    "placeholder": "1234 Elm Street",
     "type": "text"
   },
   [
     {
+      "label": "City",
       "id": "city",
-      "type": "text"
+      "type": "text",
+      "placeholder": "Springfield"
     },
     {
+      "label": "State",
       "id": "state",
-      "type": "text"
+      "type": "text",
+      "placeholder": "IL"
     },
     {
+      "label": "Zip",
       "id": "zip",
-      "type": "text"
+      "type": "text",
+      "placeholder": "62704"
     }
   ],
   {
+    "label": "Phone",
     "id": "phone",
     "required": true,
-    "type": "text"
+    "type": "text",
+    "placeholder": "Phone"
   },
   {
+    "label": "Job Title",
     "id": "jobTitle",
     "options": [
       "Engineer - lead",
@@ -56,6 +70,7 @@
     "type": "select"
   },
   {
+    "label": "Reason",
     "id": "reason",
     "placeholder": "Describe why you are a good fit for the job you are applying for.",
     "type": "textarea"
