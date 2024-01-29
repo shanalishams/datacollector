@@ -110,7 +110,7 @@ const DataCollector = (props: DataCollectorProps) => {
   return (
     <Stack gap={1} className={"col-lg-6 center"}>
       <div className="p-1">
-        <h1>Personal Data Collector</h1>
+        <h1 role={"banner"}>Personal Data Collector</h1>
         <hr />
       </div>
       <div className="p-1">
@@ -143,7 +143,11 @@ const DataCollector = (props: DataCollectorProps) => {
         </Form>
       </div>
       <div className={"p-1 d-flex justify-content-end"}>
-        <Button onClick={handleSubmit(onSubmit)} variant={"primary"}>
+        <Button
+          role="button"
+          onClick={handleSubmit(onSubmit)}
+          variant={"primary"}
+        >
           Submit
         </Button>
       </div>

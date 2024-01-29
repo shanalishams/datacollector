@@ -23,6 +23,10 @@ const router = createBrowserRouter([
         path: "collected",
         element: <DataCollected />,
       },
+      {
+        path: "*",
+        element: <DataCollector FormFieldData={FormFieldData} />,
+      },
     ],
   },
 ]);

@@ -1,7 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 
 import DataCollectorSlice from "./slices/DataCollectorSlice";
-// ...
 
 export const store = configureStore({
   reducer: {
