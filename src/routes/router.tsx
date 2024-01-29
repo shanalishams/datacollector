@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, Navigate } from "react-router-dom";
 
 import App from "../App.tsx";
 import DataCollector from "../modules/data-collector/DataCollector.tsx";
@@ -25,7 +25,7 @@ const router = createBrowserRouter([
       },
       {
         path: "*",
-        element: <DataCollector FormFieldData={FormFieldData} />,
+        element: <Navigate to="/" />,
       },
     ],
   },
