@@ -1,3 +1,5 @@
+import { useRef } from "react";
+
 import Stack from "react-bootstrap/Stack";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
@@ -5,14 +7,17 @@ import Row from "react-bootstrap/Row";
 
 import "./DataCollector.css";
 
-import { FormFieldData } from "../../models/FormFieldData.ts";
-
-import FormField from "../../components/FormField.tsx";
+import {
+  FormField as LFormField,
+  FormFieldData,
+} from "../../models/FormFieldData";
+import FormField from "../../components/FormField";
 
 import { saveFromFieldData } from "../../store/slices/DataCollectorSlice";
-import { useAppDispatch } from "../../hooks/StoreHooks.ts";
+import { useAppDispatch } from "../../hooks/StoreHooks";
+
 import { Controller, FieldValues, useForm } from "react-hook-form";
-import { useRef } from "react";
+import { useNavigate } from "react-router-dom";
 
 export interface DataCollectorProps {
   FormFieldData: FormFieldData;
@@ -20,7 +25,13 @@ export interface DataCollectorProps {
 
 const DataCollector = (props: DataCollectorProps) => {
   const dispatch = useAppDispatch();
-  const { control, handleSubmit } = useForm();
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+  const navigate = useNavigate();
+
   const formFieldDataRef = useRef<FormFieldData>(props.FormFieldData);
 
   const onSubmit = (formData: FieldValues) => {
@@ -33,9 +44,40 @@ const DataCollector = (props: DataCollectorProps) => {
         return { ...fields, value: formData[fields.id] };
       }
     });
-
     dispatch(saveFromFieldData(formFieldDataRef.current));
+    navigate("collected");
   };
+
+  /** This function builds validation rules, we can extend this function in
+   * future to take validation rules from json metadata.
+   * */
+  function getValidationRules(fields: LFormField) {
+    const emailRegExp = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const phoneRegExp = /^[0-9\s()+-]+$/;
+
+    return {
+      required: {
+        value: fields.required,
+        message: "Field is required",
+      },
+      pattern:
+        fields.type === "email"
+          ? {
+              value: emailRegExp,
+              message: "Not a valid email",
+            }
+          : fields.type === "tel"
+            ? {
+                value: phoneRegExp,
+                message: "Not a valid phone number",
+              }
+            : undefined,
+      maxLength: {
+        value: 100,
+        message: "Max length is 100 characters",
+      },
+    };
+  }
 
   return (
     <Stack gap={1} className={"col-lg-6 center"}>
@@ -44,7 +86,7 @@ const DataCollector = (props: DataCollectorProps) => {
         <hr />
       </div>
       <div className="p-1">
-        <Form onSubmit={handleSubmit(onSubmit)}>
+        <Form>
           <Row>
             {props.FormFieldData.map((fields, index) => {
               if (Array.isArray(fields)) {
@@ -60,16 +102,24 @@ const DataCollector = (props: DataCollectorProps) => {
                       <Controller
                         name={field.id}
                         control={control}
+                        rules={getValidationRules(field)}
                         render={(controllerProps) => (
-                          <FormField
-                            {...controllerProps.field}
-                            id={field.id}
-                            type={field.type}
-                            required={field.required}
-                            placeholder={field.placeholder}
-                            label={field.label}
-                            options={field.options}
-                          />
+                          <>
+                            <FormField
+                              {...controllerProps.field}
+                              id={field.id}
+                              type={field.type}
+                              required={field.required}
+                              placeholder={field.placeholder}
+                              label={field.label}
+                              options={field.options}
+                            />
+                            {errors[field.id] && (
+                              <div className={"text-danger"}>
+                                {errors[field.id]?.message}
+                              </div>
+                            )}
+                          </>
                         )}
                       />
                     </div>
@@ -81,16 +131,24 @@ const DataCollector = (props: DataCollectorProps) => {
                     <Controller
                       name={fields.id}
                       control={control}
+                      rules={getValidationRules(fields)}
                       render={(controllerProps) => (
-                        <FormField
-                          {...controllerProps.field}
-                          id={fields.id}
-                          type={fields.type}
-                          required={fields.required}
-                          placeholder={fields.placeholder}
-                          label={fields.label}
-                          options={fields.options}
-                        />
+                        <>
+                          <FormField
+                            {...controllerProps.field}
+                            id={fields.id}
+                            type={fields.type}
+                            required={fields.required}
+                            placeholder={fields.placeholder}
+                            label={fields.label}
+                            options={fields.options}
+                          />
+                          {errors[fields.id] && (
+                            <div className={"text-danger"}>
+                              {errors[fields.id]?.message}
+                            </div>
+                          )}
+                        </>
                       )}
                     />
                   </div>
@@ -98,12 +156,13 @@ const DataCollector = (props: DataCollectorProps) => {
               }
             })}
           </Row>
-          <Button type={"submit"} variant={"primary"}>
-            Submit
-          </Button>
         </Form>
       </div>
-      <div className={"p-1 d-flex justify-content-end"}></div>
+      <div className={"p-1 d-flex justify-content-end"}>
+        <Button onClick={handleSubmit(onSubmit)} variant={"primary"}>
+          Submit
+        </Button>
+      </div>
     </Stack>
   );
 };

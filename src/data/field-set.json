@@ -20,12 +20,12 @@
     "id": "email",
     "required": true,
     "type": "email",
-    "placeholder": "abc@example.com"
+    "placeholder": "ex. abc@example.com"
   },
   {
     "label": "Address1",
     "id": "address1",
-    "placeholder": "1234 Elm Street",
+    "placeholder": "ex. 1234 Elm Street",
     "type": "text"
   },
   [
@@ -33,7 +33,7 @@
       "label": "City",
       "id": "city",
       "type": "text",
-      "placeholder": "Springfield"
+      "placeholder": "ex. Springfield"
     },
     {
       "label": "State",
@@ -45,14 +45,14 @@
       "label": "Zip",
       "id": "zip",
       "type": "text",
-      "placeholder": "62704"
+      "placeholder": "ex. 6400"
     }
   ],
   {
     "label": "Phone",
     "id": "phone",
     "required": true,
-    "type": "text",
+    "type": "tel",
     "placeholder": "Phone"
   },
   {

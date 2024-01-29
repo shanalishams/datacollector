@@ -29,6 +29,7 @@ const FormField = (props: FieldProps) => {
   if (
     props.type === "text" ||
     props.type === "email" ||
+    props.type === "tel" ||
     props.type == "password"
   ) {
     return (
@@ -37,7 +38,6 @@ const FormField = (props: FieldProps) => {
           {...props}
           id={props.id}
           type={props.type}
-          required={props.required}
           placeholder={props.placeholder}
         />
       </FieldTemplate>
@@ -49,7 +49,6 @@ const FormField = (props: FieldProps) => {
           {...props}
           id={props.id}
           type={props.type}
-          required={props.required}
           placeholder={props.placeholder}
           as="textarea"
           rows={4}
@@ -59,7 +58,7 @@ const FormField = (props: FieldProps) => {
   } else if (props.type === "select") {
     return (
       <FieldTemplate {...props}>
-        <Form.Select {...props} id={props.id} required={props.required}>
+        <Form.Select {...props} id={props.id}>
           <option value={0}>--- Select ---</option>
           {props.options?.map((option, index) => {
             return (

@@ -1,60 +1,45 @@
 import Stack from "react-bootstrap/Stack";
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
+import Row from "react-bootstrap/Row";
 
-import FieldData from "../../data/field-set.json";
-import FormField from "../../components/FormField.tsx";
+import { useAppSelector } from "../../hooks/StoreHooks.ts";
+import { selectFromFieldData } from "../../store/slices/DataCollectorSlice.ts";
 
 const DataCollected = () => {
+  const formFieldData = useAppSelector(selectFromFieldData);
+
   return (
-    <Stack gap={1} className={"w-50 center"}>
+    <Stack gap={1} className={"col-lg-6 center"}>
       <div className="p-1">
         <h1>Thank You</h1>
         <hr />
       </div>
       <div className="p-1">
-        <Form>
-          <Stack gap={3}>
-            {FieldData.map((field, index) => {
-              if (Array.isArray(field)) {
+        <Row>
+          {formFieldData.map((fields, index) => {
+            if (Array.isArray(fields)) {
+              return fields.map((field, index) => {
+                const size =
+                  fields.length >= 3 ? 4 : Math.floor(12 / fields.length);
                 return (
-                  <Stack key={index} direction={"horizontal"} gap={1}>
-                    {field.map((field, index) => {
-                      return (
-                        <div key={index} className="p-1">
-                          <FormField
-                            id={field.id}
-                            type={field.type}
-                            required={true}
-                            placeholder={field.placeholder}
-                            label={field.label}
-                            options={field.options}
-                          />
-                        </div>
-                      );
-                    })}
-                  </Stack>
-                );
-              } else {
-                return (
-                  <div key={index} className="p-1">
-                    <FormField
-                      id={field.id}
-                      type={field.type}
-                      required={true}
-                      placeholder={field.placeholder}
-                      label={field.label}
-                      options={field.options}
-                    />
+                  <div
+                    key={index}
+                    className={`col-lg-${size} col-md-12 col-sm-12 p-1`}
+                  >
+                    <label className="form-label fw-bold">{field.label}</label>
+                    <p className="">{field.value}</p>
                   </div>
                 );
-              }
-            })}
-          </Stack>
-        </Form>
-      </div>
-      <div className={"p-1 d-flex justify-content-end"}>
-        <Button variant={"primary"}>Submit</Button>
+              });
+            } else {
+              return (
+                <div key={index} className="p-1">
+                  <label className="form-label fw-bold">{fields.label}</label>
+                  <p className="">{fields.value}</p>
+                </div>
+              );
+            }
+          })}
+        </Row>
       </div>
     </Stack>
   );
