@@ -79,6 +79,34 @@ const DataCollector = (props: DataCollectorProps) => {
     };
   }
 
+  const DataCollectorField = ({ fieldData }: { fieldData: LFormField }) => {
+    return (
+      <Controller
+        name={fieldData.id}
+        control={control}
+        rules={getValidationRules(fieldData)}
+        render={(controllerProps) => (
+          <>
+            <FormField
+              {...controllerProps.field}
+              id={fieldData.id}
+              type={fieldData.type}
+              required={fieldData.required}
+              placeholder={fieldData.placeholder}
+              label={fieldData.label}
+              options={fieldData.options}
+            />
+            {errors[fieldData.id] && (
+              <div className={"text-danger"}>
+                {errors[fieldData.id]?.message}
+              </div>
+            )}
+          </>
+        )}
+      />
+    );
+  };
+
   return (
     <Stack gap={1} className={"col-lg-6 center"}>
       <div className="p-1">
@@ -99,58 +127,14 @@ const DataCollector = (props: DataCollectorProps) => {
                       key={index}
                       className={`col-lg-${size} col-md-12 col-sm-12 p-1`}
                     >
-                      <Controller
-                        name={field.id}
-                        control={control}
-                        rules={getValidationRules(field)}
-                        render={(controllerProps) => (
-                          <>
-                            <FormField
-                              {...controllerProps.field}
-                              id={field.id}
-                              type={field.type}
-                              required={field.required}
-                              placeholder={field.placeholder}
-                              label={field.label}
-                              options={field.options}
-                            />
-                            {errors[field.id] && (
-                              <div className={"text-danger"}>
-                                {errors[field.id]?.message}
-                              </div>
-                            )}
-                          </>
-                        )}
-                      />
+                      <DataCollectorField fieldData={field} />
                     </div>
                   );
                 });
               } else {
                 return (
                   <div key={index} className="p-1">
-                    <Controller
-                      name={fields.id}
-                      control={control}
-                      rules={getValidationRules(fields)}
-                      render={(controllerProps) => (
-                        <>
-                          <FormField
-                            {...controllerProps.field}
-                            id={fields.id}
-                            type={fields.type}
-                            required={fields.required}
-                            placeholder={fields.placeholder}
-                            label={fields.label}
-                            options={fields.options}
-                          />
-                          {errors[fields.id] && (
-                            <div className={"text-danger"}>
-                              {errors[fields.id]?.message}
-                            </div>
-                          )}
-                        </>
-                      )}
-                    />
+                    <DataCollectorField fieldData={fields} />
                   </div>
                 );
               }

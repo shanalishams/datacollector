@@ -25,7 +25,7 @@ const DataCollected = () => {
                     key={index}
                     className={`col-lg-${size} col-md-12 col-sm-12 p-1`}
                   >
-                    <label className="form-label fw-bold">{field.label}</label>
+                    <label className="form-label fw-bold">{field.label}:</label>
                     <p className="">{field.value}</p>
                   </div>
                 );
@@ -33,7 +33,7 @@ const DataCollected = () => {
             } else {
               return (
                 <div key={index} className="p-1">
-                  <label className="form-label fw-bold">{fields.label}</label>
+                  <label className="form-label fw-bold">{fields.label}:</label>
                   <p className="">{fields.value}</p>
                 </div>
               );
